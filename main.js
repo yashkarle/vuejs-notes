@@ -55,5 +55,28 @@ Vue.component('tab', {
 });
 
 var app = new Vue({
-	el: '#root'
+	el: '#root',
+	data: {
+		newNote: '',
+		notes: []
+	},
+	methods: {
+		addNote() {
+			let note = this.newNote.trim();
+
+      		if(note) {
+        		this.notes.push({text: note, archived: false, isVisible: true});
+        		this.newNote = '';
+      		}
+			//alert('Adding a Note!');
+		}
+	},
+	computed: {
+		nonArchivedNotes() {
+  			return this.notes.filter(note => !note.archived && note.isVisible);
+  		},
+  		archivedNotes() {
+  			return this.notes.filter(note => note.archived && note.isVisible);
+  		}
+  	}
 });

@@ -22,21 +22,33 @@
 
 	<div id="root" class="container">
 		<div class="add">
-			<input id="input" type="text" placeholder="Type a Note">
+			<input id="input" type="text" placeholder="Type a Note" v-model="newNote" v-on:keyup.enter="addNote">
   		</div>
 
 		<tabs>
 			<tab name="Notes" :selected="true">
 				<ul>
-					<li>
-						All the Non-Archived Notes will be shown here
+					<li v-for="note in nonArchivedNotes">
+						<article class="message is-warning">
+  							<div class="message-body">
+  								<p> {{ note.text }} </p> <br />
+  								<a @click="note.archived = true">Add to Archives</a> | <a>Edit</a> | <a @click="note.isVisible = false">Delete</a>
+  							</div>
+						</article>
+						<br />
 					</li>
 				</ul>
 			</tab>
 			<tab name="Archived">
 				<ul>
-					<li>
-						All the Archived Notes will be displayed here
+					<li v-for="note in archivedNotes">
+						<article class="message is-warning">
+  							<div class="message-body">
+  								<p> {{ note.text }} </p> <br /> 
+								<a @click="note.archived = false">Remove from Archives</a> | <a>Edit</a> | <a @click="note.isVisible = false">Delete</a>
+  							</div>
+						</article>
+						<br />
 					</li>
 				</ul>	
 			</tab>
