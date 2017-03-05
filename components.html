@@ -1,12 +1,14 @@
 <head>
 	<title></title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.2/css/bulma.css">
+	<link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
 	<style type="text/css">body {  padding-top: 40px; }</style>
 </head>
 
 <body>
 	<style type="text/css">
 		.add { margin-top: 20px; margin-bottom: 20px; }
+		.footer { height: 10% }
 		input { padding-bottom: 12px; }
 	</style>
 	
@@ -26,34 +28,51 @@
   		</div>
 
 		<tabs>
-			<tab name="Notes" :selected="true">
+			<tab name="Notes" icon="fa fa-sticky-note" :selected="true">
 				<ul>
 					<li v-for="note in nonArchivedNotes">
 						<article class="message is-warning">
   							<div class="message-body">
-  								<p> {{ note.text }} </p> <br />
-  								<a @click="note.archived = true">Add to Archives</a> | <a>Edit</a> | <a @click="note.isVisible = false">Delete</a>
+  								<p v-show="note != activeEdit"> {{ note.text }} </p> 
+  								<input type="text" v-model="note.text" v-on:keyup.enter="doneEdit(note)" v-show="note == activeEdit"><br />
+  								<p class="control"><a class="button is-small" title="Add to Archives" @click="note.archived = true"><span class="icon is-small"><i class="fa fa-archive"></i></span></a>  <a class="button is-small" title="Edit" @click="editNote(note)"><span class="icon is-small"><i class="fa fa-pencil"></i></span></a>  <a class="button is-small" title="Delete" @click="note.isVisible = false"><span class="icon is-small"><i class="fa fa-trash"></i></span></a></p>
   							</div>
 						</article>
-						<br />
+						<br>
 					</li>
 				</ul>
 			</tab>
-			<tab name="Archived">
+			<tab name="Archived" icon="fa fa-archive">
 				<ul>
 					<li v-for="note in archivedNotes">
 						<article class="message is-warning">
   							<div class="message-body">
-  								<p> {{ note.text }} </p> <br /> 
-								<a @click="note.archived = false">Remove from Archives</a> | <a>Edit</a> | <a @click="note.isVisible = false">Delete</a>
+  								<p v-show="note != activeEdit"> {{ note.text }} </p> 
+  								<input type="text" v-model="note.text" v-on:keyup.enter="doneEdit(note)" v-show="note == activeEdit"><br>
+								<p class="control"><a class="button is-small" title="Remove from Archives" @click="note.archived = false"><span class="icon is-small"><i class="fa fa-sticky-note"></i></span></a>  <a class="button is-small" title="Edit" @click="editNote(note)"><span class="icon is-small"><i class="fa fa-pencil"></i></span></a>  <a class="button is-small" title="Delete" @click="note.isVisible = false"><span class="icon is-small"><i class="fa fa-trash"></i></span></a></p>
   							</div>
 						</article>
-						<br />
+						<br>
 					</li>
 				</ul>	
 			</tab>
 		</tabs>
 	</div>
+
+	<footer class="footer">
+  		<div class="container">
+    		<div class="content has-text-centered">
+      			<p>
+        			<strong>NotesApp</strong> by <a href="https://github.com/yashkarle">Yash Karle</a>
+      			</p>
+      			<p>
+        			<a class="icon" href="https://github.com/yashkarle/vuejs-notes">
+          				<i class="fa fa-github"></i>
+        			</a>
+      			</p>
+    		</div>
+  		</div>
+	</footer>
 </body>
 
 <script src="https://unpkg.com/vue@2.2.1"></script>

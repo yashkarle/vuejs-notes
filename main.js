@@ -6,6 +6,7 @@ Vue.component('tabs', {
 	  		<ul>
 	    		<li :class="{ 'is-active': tab.isActive }" v-for="tab in tabs">
 	      			<a :href="tab.href" @click="selectTab(tab)">
+	        			<span class="icon is-small"><i v-bind:class="tab.icon"></i></span>
 	        			<span>{{ tab.name }}</span>
 	      			</a>
 	    		</li>
@@ -39,6 +40,7 @@ Vue.component('tab', {
 	`,
 	props: {
 		name: { required: true }, 
+		icon: { required: true },
 		selected: { default: false }
 	},
 	data() {
@@ -51,6 +53,7 @@ Vue.component('tab', {
 	},
 	mounted() {
 		this.isActive = this.selected;
+		this.icon = this.icon;
 	}
 });
 
@@ -58,7 +61,8 @@ var app = new Vue({
 	el: '#root',
 	data: {
 		newNote: '',
-		notes: []
+		notes: [],
+		activeEdit: null
 	},
 	methods: {
 		addNote() {
@@ -69,7 +73,17 @@ var app = new Vue({
         		this.newNote = '';
       		}
 			//alert('Adding a Note!');
-		}
+		},
+		editNote(note) {
+      		this.activeEdit = note;
+    	},
+    	doneEdit(note) {
+     		if (!this.activeEdit) {
+        		return;
+      		}
+      		this.activeEdit = null;
+      		note.text = note.text.trim();
+    	}
 	},
 	computed: {
 		nonArchivedNotes() {
